@@ -10,11 +10,26 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Vehicle {
+    id                   Int      @id @default(autoincrement())
+    brand                String
+    model                String
+    year                 Int
+    price                Int
+    range_km             Int
+    color                String
+    condition            String
+    battery_capacity_kWh Float
+    charging_speed_kW    Float
+    seats                Int
+    drivetrain           String
+    location             String
+    autopilot            Boolean
+    kilometer_count      Int
+    accidents            Boolean
+    accident_description String? // Optional field
+    createdAt            DateTime @default(now())
+    updatedAt            DateTime @updatedAt
 
-    @@index([name])
+    @@index([brand, model])
 }
