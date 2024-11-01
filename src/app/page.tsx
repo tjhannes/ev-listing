@@ -1,5 +1,5 @@
 import type { Vehicle } from "@prisma/client";
-import VehicleList from "~/components/VehicleList";
+import { VehicleList } from "~/components/vehicle-list";
 
 async function fetchVehicles() {
   const response = await fetch(`${process.env.BASE_URL}/api/vehicles`);
@@ -12,7 +12,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      <h1>Vehicle Listing</h1>
       <VehicleList vehicles={vehicles} />
     </div>
   );
