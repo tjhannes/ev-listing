@@ -3,7 +3,7 @@ import { VehicleDetail } from "~/components/vehicle-detail";
 
 async function fetchVehicle(id: string) {
   const response = await fetch(`${process.env.BASE_URL}/api/vehicle?id=${id}`);
-  const data: Vehicle = await response.json();
+  const data: Vehicle = (await response.json()) as Vehicle;
   return data;
 }
 

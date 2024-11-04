@@ -1,12 +1,10 @@
-import { PrismaClient } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { PrismaClient, type Vehicle } from "@prisma/client";
+import { type NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   try {
-    console.log("GET Vehicle");
     const params = req.nextUrl.searchParams;
     const id = params.get("id");
     const vehicle = await prisma.vehicle.findUnique({
@@ -25,13 +23,22 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export async function POST() {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
+    if (!req.body) {
+      return NextResponse.json(
+        { error: "Missing vehicle data" },
+        { status: 400 },
+      );
+    }
+    // TODO validate the request body to be a Vehicle and to have a unique id
+    const body = (await req.json()) as Vehicle;
     const vehicle = await prisma.vehicle.create({
-      data: req.body,
+      data: body,
     });
     return NextResponse.json(vehicle, { status: 201 });
   } catch (error) {
+    // TODO send more meaning full error message to the client, e.g.
     return NextResponse.json(
       { error: "Failed to create vehicle" },
       { status: 500 },
@@ -39,9 +46,25 @@ export async function POST() {
   }
 }
 
-export async function PUT() {
+export async function PUT(req: NextRequest, res: NextResponse) {
   try {
-    const { id, ...data } = req.body;
+    const params = req.nextUrl.searchParams;
+    const id = params.get("id");
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing vehicle id" },
+        { status: 400 },
+      );
+    }
+    // TODO validate that the id exists
+    if (!req.body) {
+      return NextResponse.json(
+        { error: "Missing vehicle data" },
+        { status: 400 },
+      );
+    }
+    // TODO validate the request body to be a Vehicle
+    const data = (await req.json()) as Vehicle;
     const vehicle = await prisma.vehicle.update({
       where: { id: Number(id) },
       data,
@@ -50,6 +73,27 @@ export async function PUT() {
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update vehicle" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: NextRequest, res: NextResponse) {
+  try {
+    const params = req.nextUrl.searchParams;
+    const id = params.get("id");
+    if (!id) {
+      return NextResponse.json(
+        { error: "Missing vehicle id" },
+        { status: 400 },
+      );
+    }
+    // TODO validate that the id exists
+    await prisma.vehicle.delete({ where: { id: Number(id) } });
+    return NextResponse.json({ status: 204 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to delete vehicle" },
       { status: 500 },
     );
   }

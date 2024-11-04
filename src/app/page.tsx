@@ -1,18 +1,33 @@
 import type { Vehicle } from "@prisma/client";
+import ErrorBoundary from "~/components/error-boundary";
 import { VehicleList } from "~/components/vehicle-list";
 
 async function fetchVehicles() {
-  const response = await fetch(`${process.env.BASE_URL}/api/vehicles`);
-  const data: Vehicle[] = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${process.env.BASE_URL}/api/vehicles`);
+    const data: Vehicle[] = (await response.json()) as Vehicle[];
+    return { error: null, data: data };
+  } catch (error) {
+    console.error("Failed to fetch vehicles:", error);
+    return { error: error, data: [] };
+  }
 }
 
 export default async function HomePage() {
-  const vehicles = await fetchVehicles();
+  const { error, data } = await fetchVehicles();
+
+  if (error) {
+    return (
+      <div>
+        <h2>Oops, there is an error!</h2>
+        <button onClick={() => window.location.reload()}>Reload</button>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <VehicleList vehicles={vehicles} />
-    </div>
+    <ErrorBoundary>
+      <VehicleList vehicles={data} />
+    </ErrorBoundary>
   );
 }

@@ -1,7 +1,5 @@
-import { Vehicle } from "@prisma/client";
-import React from "react";
-import { Button } from "./ui/button";
 import { faker } from "@faker-js/faker";
+import type { Vehicle } from "@prisma/client";
 import Link from "next/link";
 
 type VehicleListItemProps = {
@@ -12,11 +10,13 @@ export const VehicleListItem = ({ vehicle }: VehicleListItemProps) => {
   return (
     <div className="overflow-hidden rounded-lg bg-white">
       <div className="relative">
-        <img
-          src={faker.image.urlLoremFlickr({ category: "car" })}
-          alt={`${vehicle.brand} ${vehicle.model}`}
-          className="h-64 w-full object-cover"
-        />
+        <Link href={`/vehicle/${vehicle.id}`}>
+          <img
+            src={faker.image.urlLoremFlickr({ category: "car" })}
+            alt={`${vehicle.brand} ${vehicle.model}`}
+            className="h-64 w-full object-cover transition-transform hover:scale-105"
+          />
+        </Link>
       </div>
       <div className="p-4">
         <div className="mb-2 flex items-start justify-between">
@@ -42,8 +42,12 @@ export const VehicleListItem = ({ vehicle }: VehicleListItemProps) => {
             <p className="text-xs text-gray-600">kWh</p>
           </div>
         </div>
-        <Link href={`/vehicle/${vehicle.id}`}>
-          <Button className="w-full">See details</Button>
+
+        <Link
+          href={`/vehicle/${vehicle.id}`}
+          className="inline-flex h-9 w-full items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+        >
+          See details
         </Link>
       </div>
     </div>
