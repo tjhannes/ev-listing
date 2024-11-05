@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://user:Passwort123@postgres:5432/ev-listing
+      - BASE_URL=http://localhost:3000
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: Passwort123
+      POSTGRES_DB: ev-listing
+    ports:
+      - "5432:5432"

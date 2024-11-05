@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   try {
     const params = req.nextUrl.searchParams;
     const id = params.get("id");
@@ -23,7 +23,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     if (!req.body) {
       return NextResponse.json(
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function PUT(req: NextRequest, res: NextResponse) {
+export async function PUT(req: NextRequest) {
   try {
     const params = req.nextUrl.searchParams;
     const id = params.get("id");
@@ -78,7 +78,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function DELETE(req: NextRequest, res: NextResponse) {
+export async function DELETE(req: NextRequest) {
   try {
     const params = req.nextUrl.searchParams;
     const id = params.get("id");

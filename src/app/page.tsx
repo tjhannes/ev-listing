@@ -4,7 +4,9 @@ import { VehicleList } from "~/components/vehicle-list";
 
 async function fetchVehicles() {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/vehicles`);
+    const response = await fetch(
+      `${process.env.BASE_URL ?? "localhost:3000"}/api/vehicles`,
+    );
     const data: Vehicle[] = (await response.json()) as Vehicle[];
     return { error: null, data: data };
   } catch (error) {
@@ -20,7 +22,6 @@ export default async function HomePage() {
     return (
       <div>
         <h2>Oops, there is an error!</h2>
-        <button onClick={() => window.location.reload()}>Reload</button>
       </div>
     );
   }
