@@ -3,6 +3,7 @@
 To start this app for development:
 
 - Run `npm install`
+- Copy `.env.example` to `.env`
 - Run `npm run db:init`
 - Run `npm run db:push`
 - Run `npm run seed`
@@ -11,3 +12,5 @@ To start this app for development:
 Deploy docker image to AWS:
 
 - see Notion
+
+![App Screenshot](README-screenshot-1.png)
